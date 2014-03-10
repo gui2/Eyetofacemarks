@@ -5,7 +5,7 @@ directoryin ='PartialDistances/';
  ims = getAllFiles(directoryin);
  fHand = figure;
  iptsetpref('ImshowBorder','tight');
-% 
+
 % for i = 1:length(ims)
 %        h(i) = subplot (10,10,i);
 %        %  axis('square'); 
