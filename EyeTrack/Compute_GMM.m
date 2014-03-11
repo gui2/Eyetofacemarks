@@ -1,24 +1,21 @@
 clear all;
 directoryin ='Partial/'; 
  ims = getAllFiles(directoryin);
- load part.mat
-%Compute the parts average
- addpath sc;
- addpath gkde2;
-
  
+%Compute the parts average
+
  for i = 1:length(ims), % for each video    
       
          p= char(ims(i,1));
          [pathstr, name, ext] = fileparts(p);
-         
+          load part.mat
          if(~strcmp( '.mat',ext)) 
              continue; 
         end;
         
                              %check if the matrix does not already exists 
          if(exist(['PartialDistances/' name '.mat']))
-         continue;
+     %    continue;
          end;
          
         load (p); 
@@ -27,9 +24,14 @@ directoryin ='Partial/';
 
         for  i=1:length (ret(:,1)) 
               clf
+              % valX and valY are the values of the eye tracker for the
+              % frame i
                valX = ret (i,202);
                valY= 576-ret (i,203);
                close = 100000;
+           % iteration over the  landmars each iteration compares with the
+           % landmar at coordinates (j,j+1), computing the L2 norm
+           % storing the value in the close variable. 
            
             for j=1:2:198;
                        diff = norm( [ret(i,j) (576-ret(i,j+1))] - [valX valY] );
@@ -49,12 +51,13 @@ directoryin ='Partial/';
                  fprintf('\n', j ) ;
               end;
         end; 
-        
- gmms (1:100) =100;
+
+gmms (1:100) =100;
 clearvars sputnik;
 elements=1;
 previous = part(1,2);
 u =1;
+
 for  (w = 1: length(part(:,2)))
     if ( ~isequal(part (w,2) , previous))
         elements = elements+1;
@@ -78,21 +81,7 @@ for  (w = 1: length(part(:,2)))
      end;
 end;
 
-set(gca,'XTick',[1:length(sputnik_labels(:))]);
-set(gca,'XTickLabel',sputnik_labels(:));
-% a=get(gca,'XTickLabel');
-% %erase current tick labels from figure
-% %set(gca,'XTickLabel',[]);
-% %get tick label positions
-% b=get(gca,'XTick');
-% c=get(gca,'YTick');
-% rot=90;
-% %make new tick labels
-% text(b,repmat(c(1)+3*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 13, 'FontWeight', 'normal');
-%bar(sputnik(:,1));
-%saveas(hf1,['Figures/' name '.fig'],'fig');
 save (['PartialDistances/' name '.mat']); 
-hold off;
-clearvars -except  ims part
+clearvars -except  ims 
 % simplify the histogram to a narrow set of face keypoints 
 end

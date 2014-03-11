@@ -31,12 +31,16 @@ addpath sc;
                     massa(1,j) =mean(ret(:,j));
                     s(1,j)  =  std(ret(:,j));
                     c(1,j) =  cov(ret(:,j));
+                    
+                    if( s(1,j)  ==0)
+                         s(1,j)  =1;
+                    end;
                    % d = Norm2pdf(X,Y,massa(1,j),576-massa(1,j+1),s(1,j),s(1,j+1));
                      end;
           
            % figure;
           %  hold on;
-           for j=1:2:130;
+           for j=1:2:198;
                  mu = [massa(1,j) 576-massa(1,j+1)];
                 Sigma = [s(1,j)*4  0; 0  s(1,j+1)*4];
                 %V1=eye(2);
