@@ -15,7 +15,7 @@ directoryin ='Partial/';
         
                              %check if the matrix does not already exists 
          if(exist(['PartialDistances/' name '.mat']))
-     %    continue;
+         continue;
          end;
          
         load (p); 
@@ -35,20 +35,15 @@ directoryin ='Partial/';
            
             for j=1:2:198;
                        diff = norm( [ret(i,j) (576-ret(i,j+1))] - [valX valY] );
-                       plot(ret(i,j),(576-ret(i,j+1)),'o', 'MarkerEdgeColor','r','MarkerSize', 4);
                         if (close>diff) 
                         close = diff;
                         X = ret(i,j);
                         Y = 576-ret(i,j+1);
                         pos = ((j-1)/2)+1; 
-                        fprintf('   %d ', j ) ;
                         end;
             end;
-             if  (close < 10 &&  close ~=0)
-                 plot(valX,valY,'X','MarkerEdgeColor','k','MarkerSize', 13);
-                 plot(X,Y,'o', 'MarkerEdgeColor','b','MarkerSize', 7);
+             if  (close < 20 &&  close ~=0)
                  part{pos,3}=part{pos,3}+1;
-                 fprintf('\n', j ) ;
               end;
         end; 
 
