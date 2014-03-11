@@ -23,33 +23,10 @@ directoryin ='Partial/';
          
         load (p); 
          %REMOVE EVERYTHING I DONT WANT 
-        
-%         %%%%%%%%%%%%%
-%         % CREATE THE AVERAGE  KEYPOINTS FACES
-%         figure;
-%         hold on;
-%         plot( 0,0,'o', 'MarkerEdgeColor','r','MarkerSize', 1);
-%         plot( 720,576,'o', 'MarkerEdgeColor','r','MarkerSize', 1);
-%         for  i=1:length (ret(:,1)) 
-%                for j=1:199;
-%                     massa(1,j) =mean(ret(:,j));
-%                     s(1,j) = std(ret(:,j));
-%               end;
-%             end;
-%          
-%             for j=1:2:198;
-%                     plot( massa(1,j),576-massa(1,j+1),'o', 'MarkerEdgeColor','r','MarkerSize', 6);
-%             end;
-%             hold off;
        
-        %find the closest keypoint to the eyetracket for each frame
-       % FIND THE CLOSEST 
-        figure 
+
         for  i=1:length (ret(:,1)) 
               clf
-               hold on;
-               plot(0,0,'o', 'MarkerEdgeColor','r','MarkerSize', 1);
-               plot( 720,576,'o', 'MarkerEdgeColor','r','MarkerSize', 1);
                valX = ret (i,202);
                valY= 576-ret (i,203);
                close = 100000;
@@ -70,15 +47,10 @@ directoryin ='Partial/';
                  plot(X,Y,'o', 'MarkerEdgeColor','b','MarkerSize', 7);
                  part{pos,3}=part{pos,3}+1;
                  fprintf('\n', j ) ;
-             
-             end;
+              end;
         end; 
-        hold off;
         
-
-        gmms (1:100) =100;
-%load data_partial.mat;
-% pass everything to the constrained set of features
+ gmms (1:100) =100;
 clearvars sputnik;
 elements=1;
 previous = part(1,2);
@@ -99,18 +71,12 @@ prev_index =1;
 for  (w = 1: length(part(:,2)))
      if ( isequal(part (w,2) , previous))
                  sputnik(prev_index,1)=sputnik(prev_index,1)+ cell2num(part (w,3)); 
-                 %sputnik_labels(prev_index,2)= 'john'; 
-  
-     else
+    else
         previous = part (w,2) ;
         prev_index =prev_index+1;
         sputnik(prev_index,1)=sputnik(prev_index,1)+cell2num(part (w,3)); 
      end;
 end;
-
-
-hf1 = figure();
-hold on;
 
 set(gca,'XTick',[1:length(sputnik_labels(:))]);
 set(gca,'XTickLabel',sputnik_labels(:));
@@ -125,7 +91,7 @@ set(gca,'XTickLabel',sputnik_labels(:));
 % text(b,repmat(c(1)+3*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 13, 'FontWeight', 'normal');
 %bar(sputnik(:,1));
 %saveas(hf1,['Figures/' name '.fig'],'fig');
- save (['PartialDistances/' name '.mat']); 
+save (['PartialDistances/' name '.mat']); 
 hold off;
 clearvars -except  ims part
 % simplify the histogram to a narrow set of face keypoints 

@@ -719,20 +719,13 @@ return
 %% Demo function to show capabilities of sc
 function demo
 
-
-
-
-
-
-
-
 %% Demo gray & lack of border
 figure; fig = gcf; Z = peaks(500); sc(Z);
 display_text([...
 ' Lets take a standard, MATLAB, real-valued function:\n\n    peaks(256)\n\n'...
 ' Calling:\n\n    figure\n    Z = peaks(256);\n    sc(Z)\n\n'...
 ' gives (see figure). SC automatically scales intensity to fill the\n'...
-' truecolor range of [0 1].\n\n'...
+' truecolor range of [0 1].\n\n'... 
 ' If your figure isn''t docked, then the image will have no border, and\n'...
 ' will be magnified by an integer factor (in this case, 2) so that the\n'...
 ' image is a reasonable size.']);
@@ -915,8 +908,7 @@ function display_text(str)
 clc;
 fprintf([str '\n\n']);
 fprintf('Press a key to go on.\n');
-figure(gcf);
-waitforbuttonpress;
+%waitforbuttonpress;
 return
 
 function label(im, str)

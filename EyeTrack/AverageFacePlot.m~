@@ -1,5 +1,7 @@
 clear all;
+close all;
 directoryin ='Partial/'; 
+addpath sc;
  ims = getAllFiles(directoryin);
  load part.mat
  figure;
@@ -15,31 +17,46 @@ directoryin ='Partial/';
        %subplot (9,9,i);
         [c,r] = ind2sub([9 9], i);
         h=subplot('Position', [(c-1)/9, 1-(r)/9, 1/9, 1/9])
-        set(h,'Color','Red');whitebg('w');
-        axis off;
-         hold on;
+        %set(h,'Color','Red');
+         axis off;
+        whitebg('w');
+       
+        hold on;
         %%%%%%%%%%%%%
         % CREATE THE AVERAGE  KEYPOINTS FACES
-        plot( 0,0,'o', 'MarkerEdgeColor','k','MarkerSize', 0.1);
-        plot( 720,576,'o', 'MarkerEdgeColor','k','MarkerSize', 0.1);
-       % ax=get(h,'Position');
-        % ax(1)=ax(1)+0.1; %or wathever 
-        % ax(2)=ax(2)+0.1; %or wathever 
-        %ax(4)=ax(4)+0.1; %or wathever 
-        %ax(3)=ax(3)+0.01; %or wathever 
-      %set(h,'Position',ax);
-      
+        %plot( 0,0,'o', 'MarkerEdgeColor','k','MarkerSize', 0.1);
+        %plot( 720,576,'o', 'MarkerEdgeColor','k','MarkerSize', 0.1);
+
                for j=1:199;
                     massa(1,j) =mean(ret(:,j));
-                    s(1,j) = std(ret(:,j));
-              end;
-       
-          for j=1:2:198;
-                    plot( massa(1,j),576-massa(1,j+1),'+', 'MarkerEdgeColor','k','MarkerSize', 3);
-          end;
-            
+                    s(1,j)  =  std(ret(:,j));
+                    c(1,j) =  cov(ret(:,j));
+                   % d = Norm2pdf(X,Y,massa(1,j),576-massa(1,j+1),s(1,j),s(1,j+1));
+                     end;
+          
+           % figure;
+          %  hold on;
+           for j=1:2:130;
+                 mu = [massa(1,j) 576-massa(1,j+1)];
+                Sigma = [s(1,j)*4  0; 0  s(1,j+1)*4];
+                %V1=eye(2);
+                %Sigma = [ s(1,j) 10 ;s(1,j+1)  10];
+              % x1 = 1:720; x2 = 1:576;
+                
+                x1 = 1:500; x2 = 10:300;
+                [X1,X2] = meshgrid(x1,x2);
+                F = mvnpdf([X1(:) X2(:)],mu,Sigma);
+               %  pcolor(X1,X2,reshape(F ,length(X1),length(X1)));
+                F = reshape(F,length(x2),length(x1));
+               %  imagesc(F);
+               % %mvncdf([0 0],[800 800] , mu, Sigma);
+                contour(X1,X2,F,6);
+               % xlabel('x'); ylabel('y');
+               % line([0 0 1 1 0],[1 0 0 1 1],'linestyle','--','color','k');
+                end;
+  
        hold off;
- clearvars -except  ims part
+       clearvars -except  ims part
  end;
 
       
