@@ -4,7 +4,7 @@ part{i,2}='nose';
 end;
 for (i=8:9)
 part{i,1} =i;
-part{i,2}='Glabella';
+part{i,2}='gsavelabella';
 end;
 
 for (i=55:60)
@@ -19,12 +19,13 @@ end;
 
 for (i=52:54)
 part{i,1} =i;
-part{i,2}='Chin';
+part{i,2}='chin-Left';
 end;
+%%
 
 for (i=61:63)
 part{i,1} =i;
-part{i,2}='Chin';
+part{i,2}='chin-Right';
 end;
 
 for (i=16:20)

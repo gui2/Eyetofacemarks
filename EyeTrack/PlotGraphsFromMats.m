@@ -125,6 +125,60 @@ set(h,'Visible','on');
 end;
   
 
+
+% Graphic the percentages piecharts
+for o =1:3
+figure;
+hold on; 
+X =[];
+axis off;
+ switch o
+        case 1
+              for i = 1:numel(mp.sputnik(:,1))
+              X = [X, sum(s.a(i,:))/frames.a(1)];
+             end
+        case 2
+            for i = 1:numel(mp.sputnik(:,1))
+            X = [X, sum(s.b(i,:))/frames.b(1)];         
+            end
+        otherwise
+             for i = 1:numel(mp.sputnik(:,1))
+               X = [X, sum(s.c(i,:))/frames.c(1)];
+             end
+ end
+    X = [X  1-sum(X)];
+    explode(1:length(X)) =2;
+    lab=[mp.sputnik_labels  'Not Engaged'];
+    haa = pie(X,explode,lab);
+                                     % pie color handling
+                                      v=1;
+                                      for f= 1:2:2*numel(mp.sputnik(:,1))
+                                      set(haa(f), 'FaceColor', colors(v,:));
+                                      v=v+1;
+                                      end
+                                      set(haa(23), 'FaceColor', [0.8 0.8 0.8]);
+hold off; 
+
+set(gcf,'NextPlot','add');
+axes;
+    switch o
+        case 1
+        h = title('DD  Participants -- Time %');
+        case 2
+        h = title('FXS Females --Time %');
+        otherwise
+        h = title('FXS  Males -- Time % ');
+    end
+set(gca,'Visible','off');
+set(h,'Visible','on'); 
+end;
+  
+
+
+
+
+
+
 % Graphic the percentages
 for o =1:3
 figure;
@@ -164,12 +218,6 @@ end;
   
 
 
-
-
-
-
-
-
   % compute the minimum value. 
   for q =1:11
    minmax.a(q,1)=min(s.a(q,:));
@@ -192,17 +240,23 @@ hold on;
         case 1
               for i = 1:numel(mp.sputnik(:,1))
                bar(i,minmax.a(i,3), 'facecolor', colors(i,:));
-               errorbar(i,minmax.a(i,3),minmax.a(i,1),minmax.a(i,2));
+           %  errorbar(i,minmax.a(i,3),minmax.a(i,1),minmax.a(i,2));
+               e(1,1:length(s.a(i,:))) =i;
+               scatter(e(1,:),s.a(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
                end
         case 2
             for i = 1:numel(mp.sputnik(:,1))
                bar(i,minmax.b(i,3), 'facecolor', colors(i,:));
-               errorbar(i,minmax.b(i,3),minmax.b(i,1),minmax.b(i,2));
-               end
+              % errorbar(i,minmax.b(i,3),minmax.b(i,1),minmax.b(i,2));
+              e(1:length(s.b(i,:))) =i;
+               scatter(e(1,:),s.b(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
+            end
         otherwise
              for i = 1:numel(mp.sputnik(:,1))
                bar(i,minmax.c(i,3), 'facecolor', colors(i,:));
-               errorbar(i,minmax.c(i,3),minmax.c(i,1),minmax.c(i,2));
+             %  errorbar(i,minmax.c(i,3),minmax.c(i,1),minmax.c(i,2));
+               e(1:length(s.c(i,:))) =i;
+               scatter(e(1,:),s.c(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
                end
     end
  
