@@ -86,7 +86,7 @@ end;
 
 % Graphic the accumulation
 for o =1:3
-figure;
+m=figure;
 hold on; 
  switch o
         case 1
@@ -108,12 +108,17 @@ hold on;
  
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
 set(gca,'XTickLabel',mp.sputnik_labels(:));
+a=get(gca,'XTickLabel');
+set(gca,'XTickLabel',[]);
+%get tick label positions
+b=get(gca,'XTick');
+c=get(gca,'YTick');
+rot=90;
+%make new tick labels
+text(b,repmat(c(1)-0.1*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 8, 'FontWeight', 'normal');
 ylabel( 'FRAMES' , 'FontName' , 'courier' );
 set(get(gca, 'YLabel' ), 'Rotation' ,90 )
-hold off; 
 
-set(gcf,'NextPlot','add');
-axes;
     switch o
         case 1
         h = title('DD  Participants -- Raw Accumulation');
@@ -122,6 +127,10 @@ axes;
         otherwise
         h = title('FXS  Males -- Raw Accumulation ');
     end
+    
+    gg=gcf;
+    saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) 'ACCUM.eps'] ,'epsc');
+hold off; 
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 end;
@@ -162,7 +171,7 @@ axis off;
                                       v=v+1;
                                       end
                                       set(haa(23), 'FaceColor', [0.8 0.8 0.8]);
-hold off; 
+
 
 %set(gcf,'NextPlot','add');
 legend( lab(:),'location','eastoutside');
@@ -174,7 +183,11 @@ legend( lab(:),'location','eastoutside');
         h = title(['FXS Females -- %  of engagement ,  # Children: '  num2str(count.b(1)) '# Frames: ' num2str(frames.b(1))]);
         otherwise
         h = title(['FXS  Males -- %  of engagement,  # Children: '  num2str(count.c(1)) '# Frames: ' num2str(frames.c(1))]);
-      end
+    end
+     gg=gcf;
+
+  saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) '.PIE.eps'] ,'epsc');     
+    hold off; 
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 end;
@@ -216,25 +229,26 @@ set(gca,'YTick',[0:0.01:0.12]);
 ylim([0 0.12])
 set(gca,'XTickLabel',mp.sputnik_labels(:));
 a=get(gca,'XTickLabel');
-%erase current tick labels from figure
 set(gca,'XTickLabel',[]);
 %get tick label positions
 b=get(gca,'XTick');
 c=get(gca,'YTick');
 rot=90;
 %make new tick labels
-text(b,repmat(c(1)-0.2*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 12, 'FontWeight', 'normal');
+text(b,repmat(c(1)-0.2*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 9, 'FontWeight', 'normal');
 ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
 set(get(gca, 'YLabel' ), 'Rotation' ,90 )
 
   switch o
         case 1
-        h = title(['DD  Participants --   Children: '   num2str(count.a(1))  '-- Frames: '  num2str(frames.a(1)) ]);
+        h = title(['DD  Participants, Children:'   num2str(count.a(1))   ', Marks:  '   num2str(frames.a(1)*99) ],'FontSize',7);
         case 2
-        h = title(['FXS Females -- Children: '  num2str(count.b(1))   '--  Frames: ' num2str(frames.b(1))] );
+        h = title(['FXS Females, Children:'  num2str(count.b(1))   ', Marks: '    num2str(frames.b(1)*99)],'FontSize', 7);
         otherwise
-        h = title(['FXS  Males -- Children: '  num2str(count.c(1))  '--  Frames: ' num2str(frames.c(1))] ) ;
+        h = title(['FXS  Males, Children:'  num2str(count.c(1))  ',  Marks:  '  num2str(frames.c(1)*99)],'FontSize', 7);
     end
+     gg=gcf;
+    saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) '.Percentage.eps'] ,'epsc');     
 
 hold off; 
 end;
@@ -285,12 +299,21 @@ hold on;
  
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
 set(gca,'XTickLabel',mp.sputnik_labels(:));
+a=get(gca,'XTickLabel');
+set(gca,'XTickLabel',[]);
+%get tick label positions
+b=get(gca,'XTick');
+c=get(gca,'YTick');
+rot=90;
+%make new tick labels
+text(b,repmat(c(1)-0.1*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize',8, 'FontWeight', 'normal');
+
 ylabel( 'FRAMES' , 'FontName' , 'courier' );
 set(get(gca, 'YLabel' ), 'Rotation' ,90 )
 grid on
 
 
-set(gcf,'NextPlot','add');
+%set(gcf,'NextPlot','add');
 axes;
     switch o
         case 1
@@ -303,6 +326,10 @@ axes;
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 ylabel('frames')
+  gg=gcf;
+  saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) '.AVERAGE.eps'] ,'epsc');     
+
+
 hold off; 
 end;
   
