@@ -1,13 +1,10 @@
 clear all;
 close all;
 addpath  mmread
-
 directoryin='/Users/Gui/Images/FXS_TRACK/';
-
 ims = getAllFiles(directoryin);
 q=1;
 firstrun = true  ;  
-
 
 for i = 1:length(ims), % for each video 
           p= char(ims(i,1));
@@ -46,13 +43,14 @@ for i = 1:length(ims), % for each video
          
           if(strcmp( '.avi',ext))
            wwd{q,3} =  pathstr ;
-    
-          idx = strfind(pathstr,'/'); % or idx = find(str=='.');
-          dd= pathstr(idx(5)+1:length(pathstr));
-          wwd{q,4} =  dd ;
-          end;
+         end;
+         
+           if(strcmp( '.avi',ext))
+           wwd{q,3} =  pathstr ;
+         end;
+       
          m =m+1;
 end;
-save ('mapping.map');
+save mapping.map
 
 

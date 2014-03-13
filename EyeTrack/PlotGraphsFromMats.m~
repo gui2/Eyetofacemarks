@@ -39,10 +39,9 @@ for r= 1:length(ims), % for each video
              if ((~strcmp(double,wwd{j,2}) || ~strcmp('DD_Participants',wwd{j,5})) && o ==1)
               disp('continued');
                continue;
-                        else
-                titles ='DD\_Participants';
-
-            end;
+             else
+                 titles ='DD\_Participants';
+             end;
 
    mp = load (p);
    h = subplot (9,9,r);
