@@ -91,17 +91,17 @@ hold on;
  switch o
         case 1
               for i = 1:numel(mp.sputnik(:,1))
-               bar(i,frames.a(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,frames.a(1), 'facecolor', [0.8 0.8 0.8]);
                bar(i,sum(s.a(i,:)), 'facecolor', colors(i,:));
                 end
         case 2
             for i = 1:numel(mp.sputnik(:,1))
-               bar(i,frames.b(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,frames.b(1), 'facecolor',  [0.8 0.8 0.8]);
                bar(i,sum(s.b(i,:)), 'facecolor', colors(i,:));
                end
         otherwise
              for i = 1:numel(mp.sputnik(:,1))
-               bar(i,frames.c(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,frames.c(1), 'facecolor',  [0.8 0.8 0.8]);
                bar(i,sum(s.c(i,:)), 'facecolor', colors(i,:));
          end
     end
@@ -163,12 +163,12 @@ set(gcf,'NextPlot','add');
 axes;
     switch o
         case 1
-        h = title('DD  Participants -- Time %');
+        h = title(['DD  Participants -- %  of engagement,  # Children: '  num2str(count.a(1)) '# Frames: ' num2str(frames.a(1))]);
         case 2
-        h = title('FXS Females --Time %');
+        h = title(['FXS Females -- %  of engagement ,  # Children: '  num2str(count.b(1)) '# Frames: ' num2str(frames.b(1))]);
         otherwise
-        h = title('FXS  Males -- Time % ');
-    end
+        h = title(['FXS  Males -- %  of engagement,  # Children: '  num2str(count.c(1)) '# Frames: ' num2str(frames.c(1))]);
+      end
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 end;
@@ -214,6 +214,7 @@ axes;
     end
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
+ylabel('Percentage of engagement');
 end;
   
 
@@ -242,21 +243,21 @@ hold on;
                bar(i,minmax.a(i,3), 'facecolor', colors(i,:));
            %  errorbar(i,minmax.a(i,3),minmax.a(i,1),minmax.a(i,2));
                e(1,1:length(s.a(i,:))) =i;
-               scatter(e(1,:),s.a(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
+               scatter(e(1,:),s.a(i,:),'marker','+','markerfacecolor',[1  1  1]) ;
                end
         case 2
             for i = 1:numel(mp.sputnik(:,1))
                bar(i,minmax.b(i,3), 'facecolor', colors(i,:));
               % errorbar(i,minmax.b(i,3),minmax.b(i,1),minmax.b(i,2));
               e(1:length(s.b(i,:))) =i;
-               scatter(e(1,:),s.b(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
+               scatter(e(1,:),s.b(i,:),'marker','+','markerfacecolor',[1  1  1]) ;
             end
         otherwise
              for i = 1:numel(mp.sputnik(:,1))
                bar(i,minmax.c(i,3), 'facecolor', colors(i,:));
              %  errorbar(i,minmax.c(i,3),minmax.c(i,1),minmax.c(i,2));
                e(1:length(s.c(i,:))) =i;
-               scatter(e(1,:),s.c(i,:),'marker','+','markerfacecolor',[0.8  0.8  0.8]) ;
+               scatter(e(1,:),s.c(i,:),'marker','+','markerfacecolor',[1  1 1]) ;
                end
     end
  
@@ -276,6 +277,7 @@ axes;
     end
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
+ylabel('frames')
 end;
   
   
