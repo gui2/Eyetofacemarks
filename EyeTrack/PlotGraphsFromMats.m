@@ -108,6 +108,8 @@ hold on;
  
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
 set(gca,'XTickLabel',mp.sputnik_labels(:));
+ylabel( 'FRAMES' , 'FontName' , 'courier' );
+set(get(gca, 'YLabel' ), 'Rotation' ,90 )
 hold off; 
 
 set(gcf,'NextPlot','add');
@@ -127,7 +129,9 @@ end;
 
 
 % Graphic the percentages piecharts
+
 for o =1:3
+
 figure;
 hold on; 
 X =[];
@@ -149,7 +153,8 @@ axis off;
     X = [X  1-sum(X)];
     explode(1:length(X)) =2;
     lab=[mp.sputnik_labels  'Not Engaged'];
-    haa = pie(X,explode,lab);
+    %haa = pie(X,explode,lab);
+    haa = pie(X,explode);
                                      % pie color handling
                                       v=1;
                                       for f= 1:2:2*numel(mp.sputnik(:,1))
@@ -159,8 +164,9 @@ axis off;
                                       set(haa(23), 'FaceColor', [0.8 0.8 0.8]);
 hold off; 
 
-set(gcf,'NextPlot','add');
-axes;
+%set(gcf,'NextPlot','add');
+legend( lab(:),'location','eastoutside');
+%axes;
     switch o
         case 1
         h = title(['DD  Participants -- %  of engagement,  # Children: '  num2str(count.a(1)) '# Frames: ' num2str(frames.a(1))]);
@@ -180,8 +186,15 @@ end;
 
 
 % Graphic the percentages
-for o =1:3
 figure;
+ iptsetpref('ImshowBorder','tight'); 
+
+for o =1:3
+subplot (2,3,o);
+%subplot (9,9,i);
+      %  [c,r] = ind2sub([1 3], o);
+      %   h=subplot('Position', [(c-1)/5, 1-(r)/5, 1/5, 1/5])
+                                              
 hold on; 
  switch o
         case 1
@@ -199,22 +212,31 @@ hold on;
     end
  
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
+set(gca,'YTick',[0:0.01:0.12]);
+ylim([0 0.12])
 set(gca,'XTickLabel',mp.sputnik_labels(:));
-hold off; 
+a=get(gca,'XTickLabel');
+%erase current tick labels from figure
+set(gca,'XTickLabel',[]);
+%get tick label positions
+b=get(gca,'XTick');
+c=get(gca,'YTick');
+rot=90;
+%make new tick labels
+text(b,repmat(c(1)-0.2*(c(2)-c(1)),length(b),1),a,'HorizontalAlignment','right','rotation',rot,'FontSize', 12, 'FontWeight', 'normal');
+ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
+set(get(gca, 'YLabel' ), 'Rotation' ,90 )
 
-set(gcf,'NextPlot','add');
-axes;
-    switch o
+  switch o
         case 1
-        h = title('DD  Participants -- Time %');
+        h = title(['DD  Participants --   Children: '   num2str(count.a(1))  '-- Frames: '  num2str(frames.a(1)) ]);
         case 2
-        h = title('FXS Females --Time %');
+        h = title(['FXS Females -- Children: '  num2str(count.b(1))   '--  Frames: ' num2str(frames.b(1))] );
         otherwise
-        h = title('FXS  Males -- Time % ');
+        h = title(['FXS  Males -- Children: '  num2str(count.c(1))  '--  Frames: ' num2str(frames.c(1))] ) ;
     end
-set(gca,'Visible','off');
-set(h,'Visible','on'); 
-ylabel('Percentage of engagement');
+
+hold off; 
 end;
   
 
@@ -263,7 +285,10 @@ hold on;
  
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
 set(gca,'XTickLabel',mp.sputnik_labels(:));
-hold off; 
+ylabel( 'FRAMES' , 'FontName' , 'courier' );
+set(get(gca, 'YLabel' ), 'Rotation' ,90 )
+grid on
+
 
 set(gcf,'NextPlot','add');
 axes;
@@ -273,11 +298,12 @@ axes;
         case 2
         h = title('FXS Females -- Mean and confidence values');
         otherwise
-        h = title('FXS  Males -- Mean and confidence values ');
+        h = title('FXS  Males -- Mean and OBSERVATIONS');
     end
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 ylabel('frames')
+hold off; 
 end;
   
   
