@@ -12,7 +12,9 @@ Accum_sputnik(1:11,1:3) =0;
 Groups_sputnik(1:11,1:3) =0;
 s = struct('a',zeros(11,0),'b',zeros(11,0),'c',zeros(11,0));
 minmax= struct('a',zeros(11,3),'b',zeros(11,3),'c',zeros(11,3));
-count = struct('a',zeros(11,3),'b',zeros(11,3),'c',zeros(11,3));
+count = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
+frames = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
+
   for o =1:3
                      figure;
                       for r= 1:length(ims), % for each video    
@@ -48,18 +50,20 @@ count = struct('a',zeros(11,3),'b',zeros(11,3),'c',zeros(11,3));
                                                                         for i = 1:numel(mp.sputnik(:,1))
                                                                         bar(i,mp.sputnik(i,1), 'facecolor', colors(i,:));
                                                                         end
-                                                                        Accum_sputnik(:,o) =Accum_sputnik(:,o) + mp.sputnik(:,1);
                                                                         hold off; 
                                                                         switch o
                                                                          case 1
                                                                           s.a = [s.a,mp.sputnik(:,1)];
                                                                           count.a =count.a+1 ;
+                                                                          frames.a = frames.a + length (mp.ret(:,1));
                                                                           case 2
-                                                                         s.b =  [s.b,mp.sputnik(:,1)];
+                                                                          s.b =  [s.b,mp.sputnik(:,1)];
                                                                          count.b=count.b+1 ;
+                                                                         frames.b = frames.b + length (mp.ret(:,1));
                                                                          otherwise
                                                                           s.c = [s.c,mp.sputnik(:,1)];   
                                                                          count.c=count.c+1 ;
+                                                                         frames.c= frames.c + length (mp.ret(:,1));
                                                                          end
                                       end; 
                         end;
@@ -84,9 +88,24 @@ end;
 for o =1:3
 figure;
 hold on; 
-        for i = 1:numel(mp.sputnik(:,1))
-        bar(i,Accum_sputnik(i,o), 'facecolor', colors(i,:));
-        end
+ switch o
+        case 1
+              for i = 1:numel(mp.sputnik(:,1))
+               bar(i,frames.a(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,sum(s.a(i,:)), 'facecolor', colors(i,:));
+                end
+        case 2
+            for i = 1:numel(mp.sputnik(:,1))
+               bar(i,frames.b(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,sum(s.b(i,:)), 'facecolor', colors(i,:));
+               end
+        otherwise
+             for i = 1:numel(mp.sputnik(:,1))
+               bar(i,frames.c(1), 'facecolor', [0.5 0.5 0.5]);
+               bar(i,sum(s.c(i,:)), 'facecolor', colors(i,:));
+         end
+    end
+ 
 set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
 set(gca,'XTickLabel',mp.sputnik_labels(:));
 hold off; 
@@ -95,15 +114,59 @@ set(gcf,'NextPlot','add');
 axes;
     switch o
         case 1
-        h = title('DD  Participants');
+        h = title('DD  Participants -- Raw Accumulation');
         case 2
-        h = title('FXS Females');
+        h = title('FXS Females --Raw Accumulation');
         otherwise
-        h = title('FXS  Males');
+        h = title('FXS  Males -- Raw Accumulation ');
     end
 set(gca,'Visible','off');
 set(h,'Visible','on'); 
 end;
+  
+
+% Graphic the percentages
+for o =1:3
+figure;
+hold on; 
+ switch o
+        case 1
+              for i = 1:numel(mp.sputnik(:,1))
+               bar(i,sum(s.a(i,:))/frames.a(1), 'facecolor', colors(i,:));
+                end
+        case 2
+            for i = 1:numel(mp.sputnik(:,1))
+                   bar(i,sum(s.b(i,:))/frames.b(1), 'facecolor', colors(i,:));
+               end
+        otherwise
+             for i = 1:numel(mp.sputnik(:,1))
+               bar(i,sum(s.c(i,:))/frames.c(1), 'facecolor', colors(i,:));
+         end
+    end
+ 
+set(gca,'XTick',[1:length(mp.sputnik_labels(:))]);
+set(gca,'XTickLabel',mp.sputnik_labels(:));
+hold off; 
+
+set(gcf,'NextPlot','add');
+axes;
+    switch o
+        case 1
+        h = title('DD  Participants -- Time %');
+        case 2
+        h = title('FXS Females --Time %');
+        otherwise
+        h = title('FXS  Males -- Time % ');
+    end
+set(gca,'Visible','off');
+set(h,'Visible','on'); 
+end;
+  
+
+
+
+
+
 
 
 
