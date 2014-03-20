@@ -102,31 +102,33 @@
 
 load 'uptohere.mat';
 % Statistics By IQ .
-for o =1:3
+for o =1:3 % for each group 
     m=figure; 
     clearvars sortedValues sortIndex lab
-    
+
     switch o
         case 1
-         [sortedValues,sortIndex] = sort(IQ.a(:));
-                      for mark =1:numel(mp.sputnik(:,1))
+                      [sortedValues,sortIndex] = sort(IQ.a(:)); % sort in ascendent order 
+                      for mark =1:numel(mp.sputnik(:,1)) % iterate over the 11 face marks
                        hold on; 
                        cc =[];
                               for (p = 1: length(sortIndex))
-                              cc = [cc, s.a(mark,sortIndex(p))/framesX.a(p)];
+                              cc = [cc, s.a(mark,sortIndex(p))/framesX.a(p)]; % normalize to  the percentage of frames attending to the mark 
                               end;
-                           b = transpose(sortedValues);
+                           b = transpose(sortedValues); 
                            aa = cellfun(@str2double,b);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
-                           ls = lsline;
+                           ls = lsline; % linear regression  single variable least square line 
                      end;
+                     % the rest is all about  graphics and display 
                     for mark =1:numel(mp.sputnik(:,1))
                              set(ls(mark), 'color', colors(mark,:), 'LineWidth', 2 ); 
                     end;
                         hold off;
                         lab=[mp.sputnik_labels ];
                         legend(ls(:),lab,'location','eastoutside');
-              
+               % case 2 and 3 should be all put in the same function. This
+               % was copied and pasted  because of deadline. 
         case 2
                    [sortedValues,sortIndex] = sort(IQ.b(:));
                     for mark =1:numel(mp.sputnik(:,1))
@@ -191,7 +193,7 @@ for o =1:3
 end;
 
 
-% Statistics by Age
+% Statistics by Age % comments are repeated of the previous function 
 for o =1:3
     m=figure; 
     clearvars sortedValues sortIndex lab
