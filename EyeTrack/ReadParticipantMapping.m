@@ -11,7 +11,8 @@ for ( i=1:length(C))
     for ( j=1:length(wwd(:,4)))
     if (strcmp(C(i),wwd{j,4}))
         wwd{j,5}=B(i)
+        wwd{j,6}=K(i)
+        wwd{j,7}=L(i)
     end;
-  %  disp(
 end;
 end;
