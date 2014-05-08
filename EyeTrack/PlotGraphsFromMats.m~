@@ -1,143 +1,157 @@
-% clear all;
-% close all
-%  load mapping.mat;
-% directoryin ='PartialDistances/'; 
-%  ims = getAllFiles(directoryin);
-% 
-%  iptsetpref('ImshowBorder','tight'); 
-% 
-%  
-%   %% PLOT XF_MALE
-% Accum_sputnik(1:11,1:3) =0;
-% Groups_sputnik(1:11,1:3) =0;
-% s = struct('a',zeros(11,0),'b',zeros(11,0),'c',zeros(11,0));
-% minmax= struct('a',zeros(11,3),'b',zeros(11,3),'c',zeros(11,3));
-% count = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
-% frames = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
-% framesX = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
-% Age = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
-% IQ = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
-% 
-%   for o =1:3
-%                      figure;
-%                       for r= 1:length(ims), % for each video    
-%                                            p= char(ims(r,1));
-%                                            [pathstr, name, ext] = fileparts(p);
-%                                            if(~strcmp( '.mat',ext)) 
-%                                                  continue; 
-%                                            end;
-%                                            [pathstr, name, ext] = fileparts(name);
-%                                            double = [name ext];
-%                                            % Split By Groups 
-%                                            for ( j=1:length(wwd(:,5)))
-%                                                         if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Males',wwd{j,5})&& o ==3)
-%                                                             continue;
-%                                                         end;
-%                                                         if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Females',wwd{j,5})&& o ==2)
-%                                                              continue;
-%                                                         end;
-%                                                          if ((~strcmp(double,wwd{j,2}) || ~strcmp('DD_Participants',wwd{j,5})) && o ==1)
-%                                                              continue;
-%                                                         end;
-% 
-%                                                        mp = load (p);
-%                                                        mp.age = wwd{j,7};
-%                                                        mp.IQ = wwd{j,6};
-%                                                        h = subplot (9,9,r);
-%                                                        ax=get(h,'Position');
-%                                                        ax(1)=ax(1)-0.01; %or wathever 
-%                                                        ax(2)=ax(2)+0.01; %or wathever 
-%                                                        ax(3)=ax(3)+0.02; %or wathever 
-%                                                        set(h,'Position',ax);
-%                                                        axis off;
-%                                                        colors =hsv(12);
-%                                                        hold on; 
-%                                                                         for i = 1:numel(mp.sputnik(:,1))
-%                                                                         bar(i,mp.sputnik(i,1), 'facecolor', colors(i,:));
-%                                                                         end
-%                                                                         hold off;  
-%                                                                         lf =length (mp.ret(:,1));
-%                                                                         switch o
-%                                                                          case 1
-%                                                                           s.a = [s.a,mp.sputnik(:,1)];
-%                                                                           Age.a= [ Age.a,  mp.age];
-%                                                                            IQ.a = [IQ.a,  mp.IQ];
-%                                                                           count.a =count.a+1 ;
-%                                                                         
-%                                                                           frames.a = frames.a + lf ;
-%                                                                           framesX.a = [framesX.a , lf];
-%                                                                           case 2
-%                                                                           s.b =  [s.b,mp.sputnik(:,1)];
-%                                                                          Age.b= [ Age.b,  mp.age];
-%                                                                           IQ.b= [IQ.b,  mp.IQ];
-%                                                                          count.b=count.b+1 ;
-%                                                                          frames.b = frames.b + length (mp.ret(:,1));
-%                                                                          framesX.b = [framesX.b , lf];
-%                                                                            otherwise
-%                                                                          s.c = [s.c,mp.sputnik(:,1)];   
-%                                                                          Age.c= [ Age.c,  mp.age];
-%                                                                          IQ.c= [IQ.c,  mp.IQ];
-%                                                                          count.c=count.c+1 ;
-%                                                                          frames.c= frames.c + length (mp.ret(:,1));
-%                                                                          framesX.c = [framesX.c , lf];
-%                                                                          end
-%                                       end; 
-%                         end;
-%     
-%       %% Setting the title
-%             set(gcf,'NextPlot','add');
-%             axes;
-%             switch o
-%                     case 1
-%                     h = title('DD  Participants');
-%                     case 2
-%                     h = title('FXS Females');
-%                     otherwise
-%                     h = title('FXS  Males');
-%                     end
-%             set(gca,'Visible','off');
-%             set(h,'Visible','on');
-% end;
+clear all;
+close all
+ load mapping.mat;
+directoryin ='PartialDistances/'; 
+ ims = getAllFiles(directoryin);
 
+ iptsetpref('ImshowBorder','tight'); 
 
-load 'uptohere.mat';
-% Statistics By IQ .
-for o =1:3
-    m=figure; 
-    clearvars sortedValues sortIndex lab
+  %% PLOT XF_MALE
+Accum_sputnik(1:11,1:3) =0;
+Groups_sputnik(1:11,1:3) =0;
+s = struct('a',zeros(11,0),'b',zeros(11,0),'c',zeros(11,0));
+minmax= struct('a',zeros(11,3),'b',zeros(11,3),'c',zeros(11,3));
+count = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
+frames = struct('a',zeros(1),'b',zeros(1),'c',zeros(1));
+framesX = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
+Age = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
+IQ = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
+
+  for o =1:3
+                     figure;
+                      for r= 1:length(ims), % for each video    
+                                           p= char(ims(r,1));
+                                           [pathstr, name, ext] = fileparts(p);
+                                           if(~strcmp( '.mat',ext)) 
+                                                 continue; 
+                                           end;
+                                           [pathstr, name, ext] = fileparts(name);
+                                           double = [name ext];
+                                           
+                                           % Split By Groups 
+                                           for ( j=1:length(wwd(:,5)))
+                                                        % the type of participant
+                                                        if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Males',wwd{j,5})&& o ==3)
+                                                            continue;
+                                                        end;
+                                                           % the type of participant
+                                                        if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Females',wwd{j,5})&& o ==2)
+                                                             continue;
+                                                        end;
+                                                           % the type of participant
+                                                         if ((~strcmp(double,wwd{j,2}) || ~strcmp('DD_Participants',wwd{j,5})) && o ==1)
+                                                             continue;
+                                                        end;
+
+                                                       mp = load (p);
+                                                       mp.age = wwd{j,7};
+                                                       mp.IQ = wwd{j,6};
+                                                       h = subplot (9,9,r);
+                                                       ax=get(h,'Position');
+                                                       ax(1)=ax(1)-0.01; %or wathever 
+                                                       ax(2)=ax(2)+0.01; %or wathever 
+                                                       ax(3)=ax(3)+0.02; %or wathever 
+                                                       set(h,'Position',ax);
+                                                       axis off;
+                                                       colors =hsv(12);
+                                                       hold on; 
+                                                                        for i = 1:numel(mp.sputnik(:,1))
+                                                                        bar(i,mp.sputnik(i,1), 'facecolor', colors(i,:));
+                                                                        end
+                                                                        hold off;  
+                                                                        lf =length (mp.ret(:,1));
+                                                                        switch o
+                                                                         case 1
+                                                                          s.a = [s.a,mp.sputnik(:,1)];
+                                                                          Age.a= [ Age.a,  mp.age];
+                                                                           IQ.a = [IQ.a,  mp.IQ];
+                                                                          count.a =count.a+1 ;
+                                                                         frames.a = frames.a + lf ;
+                                                                          framesX.a = [framesX.a , lf];
+                                                                          case 2
+                                                                          s.b =  [s.b,mp.sputnik(:,1)];
+                                                                         Age.b= [ Age.b,  mp.age];
+                                                                         IQ.b= [IQ.b,  mp.IQ];
+                                                                         count.b=count.b+1 ;
+                                                                         frames.b = frames.b + length (mp.ret(:,1));
+                                                                         framesX.b = [framesX.b , lf];
+                                                                           otherwise
+                                                                         s.c = [s.c,mp.sputnik(:,1)];   
+                                                                         Age.c= [ Age.c,  mp.age];
+                                                                         IQ.c= [IQ.c,  mp.IQ];
+                                                                         count.c=count.c+1 ;
+                                                                         frames.c= frames.c + length (mp.ret(:,1));
+                                                                         framesX.c = [framesX.c , lf];
+                                                                         end
+                                      end; 
+                        end; 
     
+                        
+                        
+      %% Setting the title
+            set(gcf,'NextPlot','add');
+            axes;
+            switch o
+                    case 1
+                    h = title('DD  Participants');
+                    case 2
+                    h = title('FXS Females');
+                    otherwise
+                    h = title('FXS  Males');
+                    end
+            set(gca,'Visible','off');
+            set(h,'Visible','on');
+end;
+
+
+%load 'uptohere.mat';
+% Statistics By IQ .
+for o =1:3 % for each group 
+    m=figure; 
+    mari =[];
+    clearvars sortedValues sortIndex lab
     switch o
         case 1
-         [sortedValues,sortIndex] = sort(IQ.a(:));
-                      for mark =1:numel(mp.sputnik(:,1))
+                     T=IQ.a;
+                     T = str2double(T)
+                    %  isnum = cellfun(@isnumeric,T);
+                    %  result = NaN(size(T));
+                    %  result(isnum) = [T{isnum}];
+                      [sortedValues,sortIndex] = sort(T,'descend'); % sort in ascendent order 
+                      for mark =1:numel(mp.sputnik(:,1)) % iterate over the 11 face marks
                        hold on; 
                        cc =[];
                               for (p = 1: length(sortIndex))
-                              cc = [cc, s.a(mark,sortIndex(p))/framesX.a(p)];
+                              cc = [cc, s.a(mark,sortIndex(p))/framesX.a(p)]; % normalize to  the percentage of frames attending to the mark 
                               end;
-                           b = transpose(sortedValues);
-                           aa = cellfun(@str2double,b);
+                           aa = transpose(sortedValues); 
+                         %  aa = cellfun(@str2double,b);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
-                           ls = lsline;
+                           mari = [mari ; cc(1,:)];
+                           ls = lsline; % linear regression  single variable least square line 
                      end;
+                     % the rest is all about  graphics and display 
                     for mark =1:numel(mp.sputnik(:,1))
                              set(ls(mark), 'color', colors(mark,:), 'LineWidth', 2 ); 
                     end;
                         hold off;
                         lab=[mp.sputnik_labels ];
                         legend(ls(:),lab,'location','eastoutside');
-              
+               % case 2 and 3 should be all put in the same function. This
+               % was copied and pasted  because of deadline. 
         case 2
-                   [sortedValues,sortIndex] = sort(IQ.b(:));
+                  T=IQ.b;
+                  T = str2double(T)
+                   [sortedValues,sortIndex] = sort(T);
                     for mark =1:numel(mp.sputnik(:,1))
                        hold on; 
                        cc =[];
                               for (p = 1: length(sortIndex))
                               cc = [cc, s.b(mark,sortIndex(p))/framesX.b(p)];
                              end;
-                           b = transpose(sortedValues);
-                           aa = cellfun(@str2double,b);
+                           aa = transpose(sortedValues);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
+                           mari = [mari ; cc(1,:)];
                            ls = lsline;
                      end;
                     for mark =1:numel(mp.sputnik(:,1))
@@ -147,16 +161,18 @@ for o =1:3
                         lab=[mp.sputnik_labels];
                         legend(ls(:),lab,'location','eastoutside');
         otherwise
-                    [sortedValues,sortIndex] = sort(IQ.c(:));
+                    T=IQ.c;
+                    T = str2double(T)
+                   [sortedValues,sortIndex] = sort(T);
                      for mark =1:numel(mp.sputnik(:,1))
-                       hold on; 
+                     hold on; 
                              cc =[];
                               for (p = 1: length(sortIndex))
                               cc = [cc, s.c(mark,sortIndex(p))/framesX.c(p)];
                              end;
-                           b = transpose(sortedValues);
-                           aa = cellfun(@str2double,b);
+                          aa = transpose(sortedValues);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
+                           mari = [mari ; cc(1,:)];
                            ls = lsline;
                      end;
                     for mark =1:numel(mp.sputnik(:,1))
@@ -165,9 +181,19 @@ for o =1:3
                         hold off;
                         lab=[mp.sputnik_labels  'Not Engaged'];
                         legend(ls(:),lab,'location','eastoutside');
-        
+                      
     end
+             
     % Setting the title
+    F =num2cell(transpose(mari));
+    S=  mp.sputnik_labels
+    KK= ['IQ',num2cell(sortedValues)]
+    C = [S;F];
+    C=horzcat(C,transpose(KK));
+    
+             ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
+             set(get(gca, 'YLabel' ), 'Rotation' ,90 )
+             xlabel( 'IQ' , 'FontName' , 'courier' );
             set(gcf,'NextPlot','add');
             axes;
             switch o
@@ -180,15 +206,22 @@ for o =1:3
                     end
             set(gca,'Visible','off');
             set(h,'Visible','on');
-            
-              gg=gcf;
+             clearvars mari 
+             gg=gcf;
              saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) 'IQ-LSLeps'] ,'epsc');
-
-  
+             fid=fopen(['/Users/Gui/Eyetofacemarks/Results/ENGAGEMENT-IQ-' num2str(o) '.csv'],'wt');
+         [rows,cols]=size(C)
+         fprintf(fid,'%s,',C{1,1:end-1})
+        fprintf(fid,'%s\n',C{1,end}) 
+         for i=2:rows
+      fprintf(fid,'%d,',C{i,1:end-1})
+      fprintf(fid,'%d\n',C{i,end})
+end
+             %   csvwrite(['/Users/Gui/Eyetofacemarks/Results/' num2str(o) '-ENGAGEMENT-IQ.csv'], C );
 end;
 
 
-% Statistics by Age
+% Statistics by Age % comments are repeated of the previous function 
 for o =1:3
     m=figure; 
     clearvars sortedValues sortIndex lab
@@ -255,6 +288,9 @@ for o =1:3
         
     end
     % Setting the title
+            ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
+             set(get(gca, 'YLabel' ), 'Rotation' ,90 )
+             xlabel( 'AGE' , 'FontName' , 'courier' );
             set(gcf,'NextPlot','add');
             axes;
             switch o
@@ -267,9 +303,9 @@ for o =1:3
                     end
             set(gca,'Visible','off');
             set(h,'Visible','on');
-            
+    
              gg=gcf;
-             saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) 'AGE-LSL.eps'] ,'epsc');
+             saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) 'AGE-LSLeps'] ,'epsc');
 
 end;
 

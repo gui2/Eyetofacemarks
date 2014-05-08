@@ -17,7 +17,6 @@ directoryin ='Partial/';
          if(exist(['PartialDistances/' name '.mat']))
          continue;
          end;
-         
         load (p); 
          %REMOVE EVERYTHING I DONT WANT 
        
@@ -32,6 +31,7 @@ directoryin ='Partial/';
            % iteration over the  landmars each iteration compares with the
            % landmar at coordinates (j,j+1), computing the L2 norm
            % storing the value in the close variable. 
+           
            
             for j=1:2:198;
                        diff = norm( [ret(i,j) (576-ret(i,j+1))] - [valX valY] );

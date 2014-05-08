@@ -20,7 +20,6 @@ addpath sc;
         %set(h,'Color','Red');
          axis off;
         whitebg('w');
-       
         hold on;
         %%%%%%%%%%%%%
         % CREATE THE AVERAGE  KEYPOINTS FACES
@@ -45,7 +44,7 @@ addpath sc;
                 Sigma = [s(1,j)*4  0; 0  s(1,j+1)*4];
                 %V1=eye(2);
                 %Sigma = [ s(1,j) 10 ;s(1,j+1)  10];
-              % x1 = 1:720; x2 = 1:576;
+                % x1 = 1:720; x2 = 1:576;
                 
                 x1 = 100:600; x2 = 10:450;
                 [X1,X2] = meshgrid(x1,x2);

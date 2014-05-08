@@ -6,7 +6,6 @@ directoryin ='PartialDistances/';
 
  iptsetpref('ImshowBorder','tight'); 
 
- 
   %% PLOT XF_MALE
 Accum_sputnik(1:11,1:3) =0;
 Groups_sputnik(1:11,1:3) =0;
@@ -28,14 +27,18 @@ IQ = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
                                            end;
                                            [pathstr, name, ext] = fileparts(name);
                                            double = [name ext];
+                                           
                                            % Split By Groups 
                                            for ( j=1:length(wwd(:,5)))
+                                                        % the type of participant
                                                         if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Males',wwd{j,5})&& o ==3)
                                                             continue;
                                                         end;
+                                                           % the type of participant
                                                         if (~strcmp(double,wwd{j,2}) || ~strcmp('FXS_Females',wwd{j,5})&& o ==2)
                                                              continue;
                                                         end;
+                                                           % the type of participant
                                                          if ((~strcmp(double,wwd{j,2}) || ~strcmp('DD_Participants',wwd{j,5})) && o ==1)
                                                              continue;
                                                         end;
@@ -63,13 +66,12 @@ IQ = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
                                                                           Age.a= [ Age.a,  mp.age];
                                                                            IQ.a = [IQ.a,  mp.IQ];
                                                                           count.a =count.a+1 ;
-                                                                        
-                                                                          frames.a = frames.a + lf ;
+                                                                         frames.a = frames.a + lf ;
                                                                           framesX.a = [framesX.a , lf];
                                                                           case 2
                                                                           s.b =  [s.b,mp.sputnik(:,1)];
                                                                          Age.b= [ Age.b,  mp.age];
-                                                                          IQ.b= [IQ.b,  mp.IQ];
+                                                                         IQ.b= [IQ.b,  mp.IQ];
                                                                          count.b=count.b+1 ;
                                                                          frames.b = frames.b + length (mp.ret(:,1));
                                                                          framesX.b = [framesX.b , lf];
@@ -82,8 +84,10 @@ IQ = struct('a',zeros(0),'b',zeros(0),'c',zeros(0));
                                                                          framesX.c = [framesX.c , lf];
                                                                          end
                                       end; 
-                        end;
+                        end; 
     
+                        
+                        
       %% Setting the title
             set(gcf,'NextPlot','add');
             axes;
@@ -104,20 +108,26 @@ end;
 % Statistics By IQ .
 for o =1:3 % for each group 
     m=figure; 
+    mari =[];
     clearvars sortedValues sortIndex lab
-
     switch o
         case 1
-                      [sortedValues,sortIndex] = sort(IQ.a(:)); % sort in ascendent order 
+                     T=IQ.a;
+                     T = str2double(T)
+                    %  isnum = cellfun(@isnumeric,T);
+                    %  result = NaN(size(T));
+                    %  result(isnum) = [T{isnum}];
+                      [sortedValues,sortIndex] = sort(T); % sort in ascendent order 
                       for mark =1:numel(mp.sputnik(:,1)) % iterate over the 11 face marks
                        hold on; 
                        cc =[];
                               for (p = 1: length(sortIndex))
                               cc = [cc, s.a(mark,sortIndex(p))/framesX.a(p)]; % normalize to  the percentage of frames attending to the mark 
                               end;
-                           b = transpose(sortedValues); 
-                           aa = cellfun(@str2double,b);
+                           aa = transpose(sortedValues); 
+                         %  aa = cellfun(@str2double,b);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
+                           mari = [mari ; cc(1,:)];
                            ls = lsline; % linear regression  single variable least square line 
                      end;
                      % the rest is all about  graphics and display 
@@ -130,16 +140,18 @@ for o =1:3 % for each group
                % case 2 and 3 should be all put in the same function. This
                % was copied and pasted  because of deadline. 
         case 2
-                   [sortedValues,sortIndex] = sort(IQ.b(:));
+                  T=IQ.b;
+                  T = str2double(T)
+                   [sortedValues,sortIndex] = sort(T);
                     for mark =1:numel(mp.sputnik(:,1))
                        hold on; 
                        cc =[];
                               for (p = 1: length(sortIndex))
                               cc = [cc, s.b(mark,sortIndex(p))/framesX.b(p)];
                              end;
-                           b = transpose(sortedValues);
-                           aa = cellfun(@str2double,b);
+                           aa = transpose(sortedValues);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
+                           mari = [mari ; cc(1,:)];
                            ls = lsline;
                      end;
                     for mark =1:numel(mp.sputnik(:,1))
@@ -149,16 +161,18 @@ for o =1:3 % for each group
                         lab=[mp.sputnik_labels];
                         legend(ls(:),lab,'location','eastoutside');
         otherwise
-                    [sortedValues,sortIndex] = sort(IQ.c(:));
+                    T=IQ.c;
+                    T = str2double(T)
+                   [sortedValues,sortIndex] = sort(T);
                      for mark =1:numel(mp.sputnik(:,1))
-                       hold on; 
+                     hold on; 
                              cc =[];
                               for (p = 1: length(sortIndex))
                               cc = [cc, s.c(mark,sortIndex(p))/framesX.c(p)];
                              end;
-                           b = transpose(sortedValues);
-                           aa = cellfun(@str2double,b);
+                          aa = transpose(sortedValues);
                            plot(aa, cc(1,:) ,'o', 'MarkerSize',5,'MarkerFaceColor', colors(mark,:)) ;
+                           mari = [mari ; cc(1,:)];
                            ls = lsline;
                      end;
                     for mark =1:numel(mp.sputnik(:,1))
@@ -167,10 +181,17 @@ for o =1:3 % for each group
                         hold off;
                         lab=[mp.sputnik_labels  'Not Engaged'];
                         legend(ls(:),lab,'location','eastoutside');
-        
+                      
     end
+             
     % Setting the title
-            ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
+    F =num2cell(transpose(mari));
+    S=  mp.sputnik_labels
+    KK= ['IQ',num2cell(sortedValues)]
+    C = [S;F];
+    C=horzcat(C,transpose(KK));
+    
+             ylabel( 'PERCENTAGE OF ENGAGEMENT' , 'FontName' , 'courier' );
              set(get(gca, 'YLabel' ), 'Rotation' ,90 )
              xlabel( 'IQ' , 'FontName' , 'courier' );
             set(gcf,'NextPlot','add');
@@ -185,11 +206,18 @@ for o =1:3 % for each group
                     end
             set(gca,'Visible','off');
             set(h,'Visible','on');
-           
+             clearvars mari 
              gg=gcf;
              saveas(gg,['/Users/Gui/Eyetofacemarks/Results/' num2str(o) 'IQ-LSLeps'] ,'epsc');
-
-  
+             fid=fopen(['/Users/Gui/Eyetofacemarks/Results/ENGAGEMENT-IQ-' num2str(o) '.csv'],'wt');
+         [rows,cols]=size(C)
+         fprintf(fid,'%s,',C{1,1:end-1})
+        fprintf(fid,'%s\n',C{1,end}) 
+         for i=2:rows
+      fprintf(fid,'%f,',C{i,1:end-1})
+      fprintf(fid,'%f\n',C{i,end})
+end
+             %   csvwrite(['/Users/Gui/Eyetofacemarks/Results/' num2str(o) '-ENGAGEMENT-IQ.csv'], C );
 end;
 
 
