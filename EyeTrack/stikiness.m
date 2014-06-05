@@ -3,7 +3,6 @@ close all;
  load mapping.mat;
 directoryin ='PartialDistances/'; 
  ims = getAllFiles(directoryin);
-
  iptsetpref('ImshowBorder','tight'); 
 
  %set(gcf,'visible','off')
@@ -19,7 +18,6 @@ for o=1:3
     jota =1;
   %  keyboard;
     for i = 1:length(ims),
- 
     hold on; 
          p= char(ims(i,1));
           [pathstr, name, ext] = fileparts(p);
@@ -33,6 +31,7 @@ for o=1:3
 
              
             for ( j=1:length(wwd(:,5)))
+                                                        ID =wwd{j,4};
                                                         if (~strcmp(doubles,wwd{j,2}) || ~strcmp('FXS_Males',wwd{j,5})&& o ==3)
                                                             continue;
                                                         end;
@@ -74,8 +73,9 @@ for o=1:3
      end
      meanD= mean(accum);
      meanD = meanD / 5;
-     Stddev(sortoff,o) =  std(accum)
+     Stddev(sortoff,o) =  std(accum);
      sumatoria (sortoff,o)  =  meanD;
+     IDS(sortoff,o) = str2num(ID); 
      sortoff = sortoff +1; 
      jota = jota +5;
     
@@ -89,13 +89,31 @@ for o=1:3
 
      end;
      end;
- gg=gcf;
-Fullmean(o)= mean (sumatoria (:,o));
-FullDev(o)= std (sumatoria (:,o));
+    gg=gcf;
+   Fullmean(o)= mean (sumatoria (:,o));
+   FullDev(o)= std (sumatoria (:,o));
  %saveas(gg,['/Users/Gui/Eyetofacemarks/Results/stickiness-' num2str(o) '.eps'] ,'epsc');
-end;
-
+end; 
+sumatoria= num2cell(sumatoria);
+ IDS = num2cell(IDS);
+ Stddev = num2cell(Stddev);
  
+ C =  horzcat( IDS(:,1) , sumatoria(:,1),Stddev(:,1),IDS(:,2),sumatoria(:,2),Stddev(:,2),IDS(:,3),sumatoria(:,3),Stddev(:,3));
+ Q = {'DD- ID' ,'Mean','Std' ,'FXS-Female-ID' ,'Mean','Std','FXS-Male-ID' ,'Mean','Std' }
+ C =[Q;C];
+
+
+      fid=fopen(['/Users/Gui/Eyetofacemarks/Results/CSV-Stickiness.csv'],'wt');
+         [rows,cols]=size(C)
+         fprintf(fid,'%s,',C{1,1:end-1})
+         fprintf(fid,'%s\n',C{1,end}) 
+         for i=2:rows
+              fprintf(fid,'%f,',C{i,1:end-1})
+              fprintf(fid,'%f\n',C{i,end})
+         end
+
+
+
  csvwrite('/Users/Gui/Eyetofacemarks/Results/CSV-Individual-MeanValues.csv',sumatoria);
  csvwrite('/Users/Gui/Eyetofacemarks/Results/CSV-Individual-Deviation.csv',Stddev);
  csvwrite('/Users/Gui/Eyetofacemarks/Results/CSV-Group-FullMean.csv',Fullmean);
