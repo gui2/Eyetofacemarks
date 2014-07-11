@@ -1,0 +1,288 @@
+Fragile-X Free-viewing Conversation Eye-tracking Analysis
+====
+
+Read in data (not shown).
+
+```{r, echo=FALSE, message=FALSE, warnings=FALSE}  
+rm(list=ls())
+source("~/Projects/R/Ranalysis/useful.R")
+setwd("~/Projects/FreeView/Eyetofacemarks/")
+d <- read.csv("Data/aggregate_data_exclusions-7-9.csv")
+theme_set(theme_bw())
+levels(d$group) <- c("DD","FXS Females","FXS Males")
+```
+
+Preliminaries
+-----
+
+How many exclusions?
+
+```{r}
+sum(d$exclude)
+d <- subset(d, exclude==0)
+```
+
+Make sure that the data match viola jones preliminary results (sanity check). 
+
+```{r}
+qplot(face.after.start.vj, face.dpm, colour=group,label=id,
+      geom="text",
+      data=d) + 
+  ylim(c(0,1)) 
+```
+
+Generalized looking at faces
+-----
+
+Group-level analysis (all error bars represent 95% confidence interval by non-parametric bootstrap). 
+
+```{r}
+ms <- ddply(d, .(group), summarise, 
+            face.looking = na.mean(face.dpm),     
+            face.cih = ci.high(face.dpm), 
+            face.cil = ci.low(face.dpm))
+
+qplot(group,face.looking, geom=c("bar","linerange"),
+      fill=group,
+      stat="identity",
+      ymin=face.looking-face.cil,
+      ymax=face.looking+face.cih,
+      data=ms) + 
+  ylim(c(0,1)) + 
+  scale_fill_discrete(name="Participant Group") +  
+  ylab("Proportion Looking at Face") + 
+  xlab("Participant Group")
+```
+
+Now by individuals:
+
+```{r}
+qplot(group, face.dpm, data=d, position=position_jitter(.1), col=group) + 
+  geom_linerange(aes(x=group, y=face.looking, ymin=face.looking-face.cil,
+                     ymax=face.looking+face.cih), col="black", data=ms) + 
+  geom_errorbarh(aes(xmin=as.numeric(group)-.05, xmax=as.numeric(group)+.05, 
+                     y=face.looking), 
+                 data=ms, col="black", height=0, size=2) +
+  ylab("Proportion Looking at Face") + 
+  xlab("Participant Group")
+
+```
+
+Stickiness analyses
+----
+
+Group-level analysis, unsmoothed (1 frame off counts as a break in attention).
+
+```{r}
+ms <- ddply(d, .(group), summarise, 
+            stickiness = na.mean(stickiness.mean),     
+            stickiness.cih = ci.high(stickiness.mean), 
+            stickiness.cil = ci.low(stickiness.mean))
+
+qplot(group,stickiness, geom=c("bar","linerange"),
+      fill=group, 
+      stat="identity",
+      ymin=stickiness-stickiness.cil,
+      ymax=stickiness+stickiness.cih,
+      data=ms) + 
+  ylab("Mean Length of Time Looking at Face (s)") + 
+  xlab("Participant Group")
+```
+
+Now, smoothed (must be 4+ frames off - 133ms at 30hz). Same pattern, but looks are much longer. 
+
+```{r}
+ms <- ddply(d, .(group), summarise, 
+            stickiness = na.mean(stickiness.sm.mean),     
+            stickiness.cih = ci.high(stickiness.sm.mean), 
+            stickiness.cil = ci.low(stickiness.sm.mean))
+
+qplot(group,stickiness, geom=c("bar","linerange"),
+      fill=group, 
+      stat="identity",
+      ymin=stickiness-stickiness.cil,
+      ymax=stickiness+stickiness.cih,
+      data=ms) + 
+  ylab("Mean Length of Time Looking at Face (s)") + 
+  xlab("Participant Group")
+```
+
+Region-level analyses
+----
+
+Again, group-level:
+
+```{r}
+md <- melt(d, id.var=c("id","group"), 
+           measure.var=c("nose","l.eye","r.eye","mouth","l.jaw","r.jaw"))
+levels(md$variable) <- c("Nose","L Eye", "R Eye","Mouth","L Jaw","R Jaw")
+
+ms <- ddply(md, .(group,variable), summarise, 
+            face.looking = na.mean(value), 
+            face.cih = ci.high(value), 
+            face.cil = ci.low(value))
+
+qplot(variable,face.looking, geom=c("bar","linerange"),
+      facets=. ~ group, fill=variable,
+      stat="identity",
+      position=position_dodge(width=.9),
+      ymin=face.looking-face.cil,
+      ymax=face.looking+face.cih,
+      data=ms) + 
+  ylim(c(0,.3)) + 
+  ylab("Proportion Looking") + 
+  xlab("Region") + 
+  scale_fill_discrete(name="Region") + 
+  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust = 1)) 
+```
+
+Showing individuals:
+
+```{r}
+qplot(variable, value, data=md, position=position_jitter(.1), col=variable, 
+      facets=.~ group) + 
+  geom_linerange(aes(x=variable, y=face.looking, ymin=face.looking-face.cil,
+                     ymax=face.looking+face.cih), col="black", data=ms) + 
+  geom_errorbarh(aes(xmin=as.numeric(variable)-.25, xmax=as.numeric(variable)+.25, 
+                     y=face.looking), col="black",
+                 data=ms, height=0, size=2) + 
+  ylab("Proportion Looking") + 
+  xlab("Region") + 
+  scale_fill_discrete(name="Region") + 
+  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust = 1)) 
+```
+
+That's a little messy, so let's try boxplots:
+
+```{r}
+qplot(variable, value, data=md,  col=variable,
+      geom="boxplot",adjust=1,
+      facets=.~ group)+ 
+  ylab("Proportion Looking") + 
+  xlab("Region") + 
+  scale_fill_discrete(name="Region") + 
+  theme(axis.text.x = element_text(angle = 90, vjust=.5, hjust = 1)) 
+```
+
+Demographic variables
+----
+
+Plot face looking by age:
+
+```{r}
+qplot(age, face.dpm, colour=group, data=d) + 
+  geom_smooth(method="lm", se=FALSE) + 
+  xlab("Age (years)") + 
+  ylab("Proportion Face Looking") + 
+  scale_colour_discrete(name="Participant Group")
+```
+
+IQ:
+
+```{r}
+qplot(iq, face.dpm, colour=group, data=d) + 
+  geom_smooth(method="lm", se=FALSE)+ 
+  xlab("IQ (standardized)") + 
+  ylab("Proportion Face Looking") + 
+  scale_colour_discrete(name="Participant Group")
+```
+
+Statistical models
+----
+
+Clearly there's a strong face looking by group effect:
+
+```{r}
+l <- lm(face.dpm ~ group, data=d)
+summary(l)
+anova(l)
+```
+
+Now look at age effects. No interaction, but main effects of age and group.
+
+```{r}
+l.age <- lm(face.dpm ~ iq * group, data=d)
+summary(l.age)
+anova(l.age)
+```
+
+Now look at IQ. Same story.
+
+```{r}
+l.iq <- lm(face.dpm ~ iq * group, data=d)
+summary(l.iq)
+anova(l.iq)
+```
+
+Time-course analyses
+----
+
+Read in data, first. 
+
+```{r}
+tc <- data.frame()
+fs <- dir("Data/timecourse",pattern="*.csv")
+
+for (f in fs) {
+  s <- read.csv(paste("Data/timecourse/",f,sep=""))
+  s <- s[-c(1,2),] ## remove the first two rows, IQ and age 
+  tc <- rbind.fill(tc, 
+                   data.frame(id=as.numeric(strsplit(f,"\\.")[[1]][2]),
+                              t=1:length(s),
+                              region=s))
+  
+  }
+
+tc$face <- tc$region != 0
+tc$t.sec <- tc$t / 5 # 5 hz downsampling
+
+head(tc)
+```
+
+Now aggregate this over time. First a sanity check to make sure we're coming up with the DPM data. As you can see, this does in fact recover the correct mapping.
+
+```{r}
+head(tc)
+
+ms <- ddply(tc, .(id), summarise, face = mean(face,na.rm=TRUE))
+dm <- merge(d,ms)
+qplot(face.dpm, face, data=dm)
+```
+
+Now figure out the timing. I believe we are at 60hz.
+
+```{r}
+ms <-  ddply(tc, .(id), summarise, t.sec = max(t.sec)/60)
+qplot(t.sec, data=ms) + 
+  xlab("Session length (min)")
+
+d <- merge(d, ms)
+```
+
+Now compute timecourses. 
+
+```{r, cache=TRUE}
+tc <- merge(tc, d[,c("id","group")]) # merge in group labels
+tc$t.bin <- floor(tc$t.sec/10)*10 # break into 10s bins
+tcs <- ddply(tc, .(t.bin,group), summarise,
+             face.mean = mean(face), 
+             face.cil = ci.low(face),
+             face.cih = ci.high(face))
+             
+qplot(t.bin/60, face.mean, 
+      ymin=face.mean - face.cil,
+      ymax=face.mean + face.cih,
+      geom="pointrange",
+      col=group, data=tcs) + 
+  xlim(c(0,10)) + 
+  ylim(c(0,.8)) +
+  xlab("Time (min)") + 
+  ylab("Proportion Face Looking") +
+  geom_smooth()
+```
+
+Write output.
+
+```{r}
+write.csv(d,"Data/output.csv",row.names=FALSE)
+```
