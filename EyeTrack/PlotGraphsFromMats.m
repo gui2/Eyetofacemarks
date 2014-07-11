@@ -93,7 +93,7 @@ NNAME = struct('a',[],'b',[],'c',[]);
                                                                          Age.c= [ Age.c,  mp.age];
                                                                          IQ.c= [IQ.c,  mp.IQ];
                                                                          NNAME.c =[NNAME.c, str2num(mp.name)];
-                                                                      %  VIDEO.c =[VIDEO.c, mp.video];
+                                                                        % VIDEO.c =[VIDEO.c, mp.video];
                                                                          
                                                                          count.c=count.c+1 ;
                                                                          frames.c= frames.c + length (mp.ret(:,1));
@@ -593,7 +593,7 @@ for o =1:3
                         legend(ls(:),lab,'location','eastoutside');
         otherwise
                         T=Age.c;
-            T = str2double(T)
+                         T = str2double(T)
                         NN = NNAME.c(:);
             [sortedValues,sortIndex] = sort(T);
             %        [sortedValues,sortIndex] = sort(Age.c(:));

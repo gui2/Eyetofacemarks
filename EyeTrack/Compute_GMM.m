@@ -1,3 +1,5 @@
+% This functin maps the eyetracking and the face keypoints. 
+
 clear all;
 directoryin ='Partial/'; 
  ims = getAllFiles(directoryin);
@@ -39,7 +41,7 @@ directoryin ='Partial/';
                         close = diff;
                         X = ret(i,j);
                         Y = 576-ret(i,j+1);
-                        pos = ((j-1)/2)+1; 
+                        pos = ((j-1)/2)+1;  % this is the closest key part. 
                         end;
             end;
              if  (close < 20 &&  close ~=0)
