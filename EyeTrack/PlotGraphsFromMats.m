@@ -54,7 +54,7 @@ NNAME = struct('a',[],'b',[],'c',[]);
                                                        mp.name = wwd{j,4};
                                                        mp.age = wwd{j,7};
                                                        mp.IQ = wwd{j,6};
-                                                       h = subplot (9,9,r);
+                                                       h = subplot (13,13,r);
                                                        ax=get(h,'Position');
                                                        ax(1)=ax(1)-0.01; %or wathever 
                                                        ax(2)=ax(2)+0.01; %or wathever 
@@ -665,7 +665,6 @@ for o =1:3
 end;
 
 
-
 % Graphic the accumulation
 for o =1:3
 m=figure;
@@ -825,8 +824,6 @@ set(get(gca, 'YLabel' ), 'Rotation' ,90 )
 hold off; 
 end;
   
-
-
   % compute the minimum value. 
   for q =1:11
    minmax.a(q,1)=min(s.a(q,:));

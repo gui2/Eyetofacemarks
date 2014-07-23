@@ -105,19 +105,17 @@ NNAME = struct('a',[],'b',[],'c',[]);
                                                                            frames.c= frames.c + length (mp.ret(:,1));
                                                                            framesX.c = [framesX.c , lf];
                                                                           fid=fopen(['/Users/Gui/Eyetofacemarks/Results/BruteMapping/FXS_M.' mp.name  '.csv'],'wt');
-                                                                           fprintf(fid,'%s\n ',mp.age{1,1} ); 
-                                                                           fprintf(fid,'%s\n ',mp.IQ{1,1} ); 
-                                                                           Trans=[ num2cell(mp.ret(:,211))];
-                                                                           Trans =mp.ret(:,211);
-                                                                           fprintf(fid,'%i\n ',Trans(:));
+                                                                            fprintf(fid,'%s\n ',mp.age{1,1} ); 
+                                                                          fprintf(fid,'%s\n ',mp.IQ{1,1} ); 
+                                                                         Trans=[ num2cell(mp.ret(:,211))];
+                                                                         Trans =mp.ret(:,211);
+                                                                          fprintf(fid,'%i\n ',Trans(:));
                                                                            %LookingAT.c= [LookingAT.c , mp.ret(:,211)];
                                                                          end
                                       end; 
                         end; 
     
 end;
-
-
 % 
 %  
 % % Statistics By COARSE  IQ .
