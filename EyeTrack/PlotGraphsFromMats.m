@@ -119,8 +119,6 @@ NNAME = struct('a',[],'b',[],'c',[]);
             set(h,'Visible','on');
 end;
 
-
-
 % Statistics By COARSE  IQ .
 for o =1:3 % for each group 
     m=figure; 

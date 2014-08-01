@@ -30,6 +30,7 @@ for i = 1:length(ims), % for each video
           if(strcmp( '.DS_Store',ext))
              continue;
          end;
+         
          %Remove the files that I dont want%%%%%%%%%%%%%%
           if(strcmp( '.mp3',ext))
              continue;

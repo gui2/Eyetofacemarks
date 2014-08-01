@@ -45,7 +45,7 @@ addpath sc;
                 %V1=eye(2);
                 %Sigma = [ s(1,j) 10 ;s(1,j+1)  10];
                 % x1 = 1:720; x2 = 1:576;
-                
+
                 x1 = 100:600; x2 = 10:450;
                 [X1,X2] = meshgrid(x1,x2);
                 F = mvnpdf([X1(:) X2(:)],mu,Sigma);

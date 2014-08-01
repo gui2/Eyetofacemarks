@@ -50,22 +50,25 @@ tue=0;
         position = [23 373; 35 185; 77 107]; % [x y]
        
         I=imread(pa);
+        
         hold on
        imshow(I);
-        text(50,100,...
-       [wwd{tue,4},1],...
-	  'HorizontalAlignment','center',... 
-	  'BackgroundColor',[1 1 1], 'FontSize',15);
+       hold off
+       keyboard
+%         text(50,100,...
+%        [wwd{tue,4},1],...
+% 	  'HorizontalAlignment','center',... 
+% 	  'BackgroundColor',[1 1 1], 'FontSize',15);
+%        
+%        
+%                text(50,200,...
+%        [name,1],...
+% 	  'HorizontalAlignment','center',... 
+% 	  'BackgroundColor',[1 1 1], 'FontSize',15);
        hold off
        
-               text(50,200,...
-       [name,1],...
-	  'HorizontalAlignment','center',... 
-	  'BackgroundColor',[1 1 1], 'FontSize',15);
-       hold off
        
-       
-       saveas(rr,['/Volumes/FAT/Group/' name '-' num2str(u) '.jpg']);
+     %  saveas(rr,['/Volumes/FAT/Group/' name '-' num2str(u) '.jpg']);
     %copyfile(pa,'/Volumes/FAT/Group/');
 
 %   if exist (['/Volumes/FAT/Group/' names '-'  num2str(u) '.jpg'] )
@@ -75,7 +78,7 @@ tue=0;
 %     
     
     try 
-       saveas(ddd,['/Volumes/FAT/Group/'  num2str(u) '.jpg']);
+      % saveas(ddd,['/Volumes/FAT/Group/'  num2str(u) '.jpg']);
       catch
       disp ('dd');    
   end;
